@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Альмео Джемилев — методист и научный редактор. Разработка образовательных продуктов, научная и медицинская редактура, научные коммуникации.">
+<meta name="author" content="Альмео Джемилев">
+<meta name="robots" content="index, follow">
+<title>Альмео Джемилев — методист, научный редактор</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --turquoise: #2ec4b6;
+    --turquoise-soft: #d6f6f3;
+    --pink: #ff8fa8;
+    --pink-soft: #ffe4ec;
+    --mint: #a7ecb8;
+    --mint-soft: #e6fbec;
+    --white: #ffffff;
+    --ink: #14171a;
+    --radius-lg: 42px;
+    --radius-md: 28px;
+    --radius-sm: 18px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  h1,h2,h3, .pixel{ font-family:'Silkscreen', monospace; line-height:1.35; letter-spacing:0.5px; }
+  a{ color: inherit; }
+  ::selection{ background: var(--pink); color: var(--ink); }
+
+  #bubbles-container{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+  .bubble{
+    position:absolute; bottom:-140px; border-radius:50%; opacity:0.5;
+    pointer-events:auto; cursor:pointer;
+    animation-name: float-up; animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+    filter: blur(0.2px);
+  }
+  .bubble.turquoise{ background: radial-gradient(circle at 30% 30%, #fff, var(--turquoise-soft) 40%, var(--turquoise) 100%); }
+  .bubble.pink{ background: radial-gradient(circle at 30% 30%, #fff, var(--pink-soft) 40%, var(--pink) 100%); }
+  .bubble.mint{ background: radial-gradient(circle at 30% 30%, #fff, var(--mint-soft) 40%, var(--mint) 100%); }
+  .bubble.pop{ animation:none !important; transition: transform .35s ease, opacity .35s ease; transform: scale(1.6); opacity:0; }
+  @keyframes float-up{
+    0%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(24px,-55vh) scale(1.05); }
+    100%{ transform: translate(-10px,-115vh) scale(0.95); }
+  }
+
+  .wrap{ max-width: 1080px; margin:0 auto; padding:0 28px; position:relative; z-index:1; }
+  section{ position:relative; z-index:1; }
+
+  header{ position:sticky; top:0; z-index:20; padding:18px 0; backdrop-filter: blur(10px); background: rgba(255,255,255,0.75); }
+  .nav-row{ display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+  .logo{ font-size:1rem; padding:10px 20px; background:var(--ink); color:var(--white); border-radius:999px; white-space:nowrap; text-decoration:none; }
+  nav ul{ list-style:none; display:flex; gap:8px; padding:0; margin:0; flex-wrap:wrap; }
+  nav a{ text-decoration:none; font-weight:600; font-size:0.92rem; padding:9px 16px; border-radius:999px; border:2px solid transparent; transition: border-color .2s ease, background .2s ease; }
+  nav a:hover{ border-color:var(--ink); background:var(--mint-soft); }
+
+  .hero{ padding:70px 0 40px; display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center; gap:30px; }
+  .hero h1{ font-size: clamp(1.7rem, 3.6vw, 2.8rem); margin:0 0 18px; }
+  .hero p.lead{ font-size:1.1rem; max-width:48ch; margin:0 0 24px; }
+  .pill-tags{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px; }
+  .pill-tags span{ background:var(--white); border:2px solid var(--ink); border-radius:999px; padding:7px 16px; font-size:0.85rem; font-weight:600; }
+
+  .hero-note{ font-size:0.98rem; margin:-8px 0 24px; opacity:0.78; }\n\n  .btn{
+    display:inline-block; text-decoration:none; font-weight:700; font-size:0.98rem;
+    padding:14px 28px; border-radius:999px; border:2px solid var(--ink);
+    background:var(--turquoise); color:var(--ink); transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{ transform: translateY(-3px) rotate(-1deg); box-shadow: 6px 6px 0 var(--ink); }
+  .btn.pink{ background:var(--pink); }
+  .btn.mint{ background:var(--mint); }
+  .btn.outline{ background:var(--white); }
+
+  .atom-hero{ position:relative; width:100%; aspect-ratio:1/1; max-width:340px; margin:0 auto; perspective:900px; }
+  .nucleus{ position:absolute; top:50%; left:50%; width:70px; height:70px; margin:-35px 0 0 -35px; border-radius:50%;
+    background: conic-gradient(from 90deg, var(--turquoise), var(--pink), var(--mint), var(--turquoise));
+    box-shadow: 0 0 40px rgba(46,196,182,0.4); animation: pulse 3.2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform: scale(1);} 50%{ transform: scale(1.08);} }
+  .orbit{ position:absolute; top:50%; left:50%; border-radius:50%; border:3px solid var(--turquoise); transform-style:preserve-3d; }
+  .orbit1{ width:200px; height:200px; margin:-100px 0 0 -100px; border-color:var(--turquoise); animation: spin1 7s linear infinite; }
+  .orbit2{ width:260px; height:260px; margin:-130px 0 0 -130px; border-color:var(--pink); animation: spin2 9s linear infinite; }
+  .orbit3{ width:320px; height:320px; margin:-160px 0 0 -160px; border-color:var(--mint); animation: spin3 11s linear infinite; }
+  @keyframes spin1{ from{ transform: rotateX(74deg) rotateZ(0deg);} to{ transform: rotateX(74deg) rotateZ(360deg);} }
+  @keyframes spin2{ from{ transform: rotateX(74deg) rotateZ(60deg);} to{ transform: rotateX(74deg) rotateZ(420deg);} }
+  @keyframes spin3{ from{ transform: rotateX(74deg) rotateZ(140deg);} to{ transform: rotateX(74deg) rotateZ(500deg);} }
+  .electron{ position:absolute; top:-7px; left:50%; width:14px; height:14px; margin-left:-7px; border-radius:50%; background:var(--ink); box-shadow:0 0 10px rgba(0,0,0,0.25); }
+  .orbit1 .electron{ background:var(--turquoise); }
+  .orbit2 .electron{ background:var(--pink); }
+  .orbit3 .electron{ background:var(--mint); }
+
+  .section-title{ font-size: clamp(1.3rem, 2.4vw, 1.9rem); margin:0 0 14px; }
+  .section-lead{ max-width:64ch; margin:0 0 36px; font-size:1.02rem; }
+
+  .band{ padding:64px 0; }
+  .band.tint-turquoise{ background:var(--turquoise-soft); border-radius:var(--radius-lg); }
+  .band.tint-pink{ background:var(--pink-soft); border-radius:var(--radius-lg); }
+  .band.tint-mint{ background:var(--mint-soft); border-radius:var(--radius-lg); }
+
+  .about-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:36px; align-items:center; }
+  .metaball-wrap{ position:relative; width:100%; max-width:280px; aspect-ratio:1/1; margin:0 auto; display:flex; align-items:center; justify-content:center; }
+  .metaball-svg{ width:100%; height:100%; filter: drop-shadow(0 20px 30px rgba(20,23,26,0.16)); }
+  .metaball-spin{ transform-origin:100px 100px; animation: spin-blob 20s linear infinite; }
+  @keyframes spin-blob{ from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
+  .metaball-label{ position:absolute; background:var(--white); border-radius:var(--radius-md); padding:16px 20px; font-weight:700; text-align:center; margin:0; max-width:74%; box-shadow:0 2px 0 rgba(20,23,26,0.08); }
+
+  .skills-list{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 18px; }
+  .skills-list span{ background:var(--white); border:2px solid var(--ink); border-radius:999px; padding:8px 16px; font-size:0.88rem; font-weight:600; }
+
+  .card-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:22px; }
+  .card{
+    background:var(--white); border:2px solid var(--ink); border-radius:var(--radius-md); padding:26px;
+    position:relative; transition: transform .22s ease, box-shadow .22s ease;
+  }
+  .card:hover{ transform: translateY(-6px) rotate(-0.6deg); box-shadow: 8px 8px 0 var(--ink); }
+  .card-icon{ width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.4rem; }
+  .card-icon.turquoise{ background:var(--turquoise); }
+  .card-icon.pink{ background:var(--pink); }
+  .card-icon.mint{ background:var(--mint); }
+  .card h3{ font-size:1.02rem; margin:0 0 10px; }
+  .card p{ margin:0; font-size:0.95rem; }
+
+  .client-list{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+  .client-list span{
+    background:var(--white); border:2px solid var(--ink); border-radius:999px;
+    padding:11px 17px; font-weight:700; font-size:0.9rem;
+  }
+  .client-note{
+    margin-top:24px; padding:18px 20px; background:var(--white);
+    border:2px solid var(--ink); border-radius:var(--radius-sm); font-size:0.94rem;
+  }
+
+  .case-card{
+    background:var(--white); border:2px solid var(--ink); border-radius:var(--radius-md);
+    padding:26px 28px; margin-bottom:20px;
+  }
+  .case-card h3{ font-size:1.05rem; margin:0 0 14px; }
+  .case-card .case-row{ margin: 0 0 8px; font-size:0.96rem; }
+  .case-card .case-row b{ font-family:'Silkscreen', monospace; font-size:0.72rem; letter-spacing:0.5px; display:block; margin-bottom:4px; opacity:0.6; }
+
+  .contact-band{ text-align:center; padding:80px 0 60px; }
+  .contact-actions{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:28px; }
+
+  footer{ text-align:center; padding:30px 0 50px; font-size:0.85rem; opacity:0.6; }
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns:1fr; }
+    .about-grid{ grid-template-columns:1fr; }
+    .card-grid{ grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bubble, .nucleus, .orbit, .metaball-spin{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bubbles-container"></div>
+
+<header>
+  <div class="wrap nav-row">
+    <a class="logo pixel" href="#hero">Альмео Джемилев</a>
+    <nav>
+      <ul>
+        <li><a href="#about">Обо мне</a></li>
+        <li><a href="#directions">Что делаю</a></li>
+        <li><a href="#clients">С кем работаю</a></li><li><a href="#cases">Кейсы</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero wrap" id="hero">
+    <div>
+      <div class="pill-tags">
+        <span>Методист</span>
+        <span>Научный редактор</span>
+        <span>Scientific communication</span>
+      </div>
+      <h1>Делаю сложное понятным</h1>
+      <p class="lead">Проектирую образовательные продукты, редактирую научный и медицинский контент и помогаю научным и образовательным проектам говорить с аудиторией понятным языком.</p>
+      <p class="hero-note">Работаю на стыке образования, науки, медицины и контента.</p>
+      <a class="btn" href="#contacts">Обсудить проект</a>
+    </div>
+    <div class="atom-hero">
+      <div class="nucleus"></div>
+      <div class="orbit orbit1"><span class="electron"></span></div>
+      <div class="orbit orbit2"><span class="electron"></span></div>
+      <div class="orbit orbit3"><span class="electron"></span></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="wrap" id="about" style="padding: 40px 0 80px;">
+    <div class="about-grid">
+      <div class="metaball-wrap">
+        <svg class="metaball-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gradAbout" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2ec4b6"/>
+              <stop offset="55%" stop-color="#ff8fa8"/>
+              <stop offset="100%" stop-color="#a7ecb8"/>
+            </linearGradient>
+            <filter id="gooAbout">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur"/>
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="goo"/>
+            </filter>
+          </defs>
+          <g class="metaball-spin" filter="url(#gooAbout)" fill="url(#gradAbout)">
+            <circle cx="78" cy="76" r="44"/>
+            <circle cx="130" cy="68" r="30"/>
+            <circle cx="122" cy="130" r="38"/>
+            <circle cx="64" cy="128" r="28"/>
+            <circle cx="100" cy="100" r="20"/>
+          </g>
+          <ellipse cx="70" cy="60" rx="24" ry="14" fill="#ffffff" opacity="0.35"/>
+        </svg>
+        <p class="metaball-label">Наука.<br>Образование.<br>Медицина.</p>
+      </div>
+      <div>
+        <h2 class="section-title">Обо мне</h2>
+        <p>Я методист и научный редактор с биологическим бэкграундом. Работаю на стыке образования, науки и контента: проектирую курсы и образовательные продукты, редактирую научные и медицинские материалы, адаптирую сложные темы для разных аудиторий.</p>
+        <p>В образовательных проектах использую instructional design и принципы андрагогики: начинаю с целей обучения, выстраиваю логику модулей и заданий, продумываю оценивание и пользовательский опыт. За плечами 3+ образовательные программы с нуля и опыт работы с проектами в EdTech, медицине и STEM.</p>
+        <div class="skills-list">
+          <span>Instructional design</span>
+          <span>ADDIE / backward design</span>
+          <span>Андрагогика</span>
+          <span>Assessment design</span>
+          <span>Научная редактура</span>
+          <span>Медицинская редактура</span>
+          <span>PubMed / Google Scholar</span>
+          <span>Figma / Notion</span>
+          <span>LMS / SCORM</span>
+          <span>iSpring / GetCourse</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECTIONS -->
+  <section class="band tint-turquoise" id="directions">
+    <div class="wrap">
+      <h2 class="section-title">Направления</h2>
+      <p class="section-lead">От разработки курса с нуля до редакторской и контентной поддержки уже работающего проекта.</p>
+      <div class="card-grid"><div class="card">
+          <div class="card-icon turquoise">🧪</div>
+          <h3>Разработка онлайн-курсов</h3>
+          <p>Проектирование структуры курса, learning objectives, модулей и логики обучения. Сценарии уроков, образовательные материалы и ТЗ для сборки в LMS, SCORM, iSpring или GetCourse.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon pink">🎓</div>
+          <h3>Методическая работа</h3>
+          <p>Аудит и доработка существующих курсов, разработка тестов и системы оценки, внедрение принципов instructional design и андрагогики.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon mint">📝</div>
+          <h3>Научная и медицинская редактура</h3>
+          <p>Редактирую научные, медицинские и образовательные материалы: проверяю логику и формулировки, адаптирую сложные темы под нужную аудиторию, работаю с PubMed и Google Scholar.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon turquoise">📣</div>
+          <h3>Упаковка и запуск</h3>
+          <p>Структура лендингов и описаний курсов, программы, презентации, продающие материалы, позиционирование и tone of voice образовательного продукта.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon pink">🔬</div>
+          <h3>Научные коммуникации и SMM</h3>
+          <p>Контент для научных проектов, лабораторий и профессиональных сообществ: стратегия, контент-план, посты, научпоп и адаптация экспертного материала.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon mint">📊</div>
+          <h3>Аналитика и улучшение продуктов</h3>
+          <p>Анализ вовлеченности, прохождения и завершения курсов, поиск узких мест в программе и пользовательском опыте, доработка на основе данных и обратной связи.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CLIENTS -->
+  <section class="band tint-pink" id="clients">
+    <div class="wrap">
+      <h2 class="section-title">С кем работаю</h2>
+      <p class="section-lead">Образовательные проекты, научные медиа, медицинские организации и профессиональные сообщества.</p>
+      <div class="client-list">
+        <span>BioMedSchool</span>
+        <span>PCR.NEWS</span>
+        <span>НИУ ВШЭ · Клуб предпринимателей ФКН</span>
+        <span>Новая Лига Университетов</span>
+        <span>Центральный университет</span>
+        <span>Фонд содействия развитию науки «Вега»</span>
+        <span>Медицинский центр «Фамилия»</span>
+        <span>Avicenna</span>
+        <span>HSE / образовательные и научные проекты</span>
+      </div>
+      <div class="client-note">
+        <strong>Форматы работы:</strong> удалённо · проектно · частичная занятость · полная занятость · консультации
+      </div>
+    </div>
+  </section>
+
+
+  <section class="wrap" id="cases" style="padding: 80px 0;">
+    <h2 class="section-title">Кейсы</h2>
+    <p class="section-lead">Проекты, в которых сочетаются методическая работа, редактура, контент и коммуникации.</p>
+
+    <div class="case-card">
+      <h3>Клуб предпринимателей ФКН НИУ ВШЭ</h3>
+      <p class="case-row"><b>Задача</b>Увеличить аудиторию и повысить узнаваемость сообщества в социальных сетях.</p>
+      <p class="case-row"><b>Решение</b>Выстроил коммуникационную стратегию, запустил контент-маркетинг, вовлекающие форматы, конкурсы, опросы и прямые эфиры с предпринимателями.</p>
+      <p class="case-row"><b>Результат</b>Аудитория канала выросла в 2 раза, посещаемость офлайн-мероприятий — в 3 раза; в Сетке — 3000 подписчиков и место в топ-10 сообществ.</p>
+    </div>
+
+    <div class="case-card">
+      <h3>Центральный университет · курс «Научная студия»</h3>
+      <p class="case-row"><b>Задача</b>Сделать сложные STEM-материалы понятными для IT-аудитории и улучшить логику курса.</p>
+      <p class="case-row"><b>Решение</b>Отредактировал и структурировал 15+ материалов, адаптировал сложные научные темы под аудиторию курса.</p>
+      <p class="case-row"><b>Результат</b>Материалы стали более последовательными и понятными для целевой аудитории курса.</p>
+    </div>
+
+    <div class="case-card">
+      <h3>Новая Лига Университетов</h3>
+      <p class="case-row"><b>Задача</b>Запустить коммуникацию новой межвузовской организации и привлечь первую аудиторию.</p>
+      <p class="case-row"><b>Решение</b>Разработал брендбук и визуальный стиль, контент-план, запустил социальные сети, организовал конференции и онлайн-дискуссии.</p>
+      <p class="case-row"><b>Результат</b>Сформировано активное сообщество с регулярным взаимодействием подписчиков, экспертов и студентов.</p>
+    </div>
+
+    <div class="case-card">
+      <h3>Фонд содействия развитию науки «Вега»</h3>
+      <p class="case-row"><b>Задача</b>Повысить узнаваемость фонда среди целевой аудитории и сформировать последовательную коммуникацию.</p>
+      <p class="case-row"><b>Решение</b>Разработал контент-стратегию и контент-план для социальных сетей, сайта и пресс-релизов.</p>
+      <p class="case-row"><b>Результат</b>Создана система контента, которая отражает направления и задачи фонда.</p>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section class="band tint-mint contact-band" id="contacts">
+    <div class="wrap">
+      <h2 class="section-title">Обсудим проект?</h2>
+      <p class="section-lead" style="margin-left:auto; margin-right:auto;">Расскажите о задаче — обсудим формат, объём работы и ожидаемый результат.</p>
+      <div class="contact-actions">
+        <a class="btn" href="https://t.me/meomeo_fenn" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+        <a class="btn outline" href="https://hh.ru/resume/64b2b31fff0d1924d70039ed1f4c4331696965" target="_blank" rel="noopener noreferrer">Резюме на hh.ru</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Альмео Джемилев — методист и научный редактор. Образование · наука · медицина · контент.</div>
+</footer>
+
+<script>
+  const container = document.getElementById('bubbles-container');
+  const colors = ['turquoise', 'pink', 'mint'];
+  function spawnBubble(){
+    const b = document.createElement('div');
+    const size = 20 + Math.random() * 70;
+    const duration = 14 + Math.random() * 12;
+    const delay = Math.random() * 6;
+    b.className = 'bubble ' + colors[Math.floor(Math.random()*colors.length)];
+    b.style.width = size + 'px';
+    b.style.height = size + 'px';
+    b.style.left = Math.random() * 100 + 'vw';
+    b.style.animationDuration = duration + 's';
+    b.style.animationDelay = delay + 's';
+    b.addEventListener('click', () => { b.classList.add('pop'); setTimeout(() => b.remove(), 350); });
+    container.appendChild(b);
+  }
+  for(let i = 0; i < 12; i++){ spawnBubble(); }
+  setInterval(() => { if(document.querySelectorAll('.bubble').length < 14){ spawnBubble(); } }, 3200);
+</script>
+
+</body>
+</html>
